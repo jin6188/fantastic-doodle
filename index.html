@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>和平精英皮肤领取</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="particle-bg"></div>
+
+  <div class="container">
+    <h1>和平精英皮肤领取中心</h1>
+
+    <form id="authForm">
+      <input type="text" id="gameId" placeholder="请输入游戏ID" required />
+      <input type="text" id="realName" placeholder="请输入实名信息" required />
+      <button type="submit">实名认证</button>
+    </form>
+
+    <div id="wheel-container" class="hidden">
+      <canvas id="wheel" width="400" height="400"></canvas>
+      <button id="spinBtn">开始抽奖</button>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>恭喜获得皮肤：</h2>
+      <img id="skin-img" src="" alt="皮肤" />
+      <p id="skin-name"></p>
+    </div>
+
+    <div id="record">
+      <h3>最新领取记录</h3>
+      <ul id="recordList"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
