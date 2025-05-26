@@ -1,106 +1,177 @@
-/* 太空能量背景粒子 */
-#particle-bg {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(ellipse at center, #020024 0%, #090979 35%, #00d4ff 100%);
-  overflow: hidden;
-  z-index: -1;
+* {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  font-family: "微软雅黑", Arial, sans-serif;
 }
 
-/* 粒子效果用canvas容器 */
-.container {
-  position: relative;
-  max-width: 480px;
-  margin: 40px auto;
-  background: rgba(0,0,0,0.65);
+body {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #eee;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   padding: 20px;
-  border-radius: 12px;
-  color: #fff;
-  font-family: "Microsoft YaHei", sans-serif;
-  text-align: center;
 }
 
-h1 {
+.container {
+  width: 360px;
+  background: rgba(0,0,0,0.75);
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 0 15px #00f0ffaa;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 0 0 6px #00ffff;
+}
+
+.account-options {
+  display: flex;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
-form input {
-  width: 80%;
-  padding: 12px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-form button {
-  padding: 12px 20px;
-  margin-top: 10px;
+.account-option {
   cursor: pointer;
-  font-weight: bold;
-  background: #00d4ff;
-  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00ffff;
+  font-weight: 600;
+  user-select: none;
+}
+
+.account-option img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+form label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+form input[type="text"] {
+  width: 100%;
+  padding: 7px 10px;
   border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.notice {
+  font-size: 12px;
+  color: #aad4ff;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 16px;
+  color: #00ffff;
+  background: transparent;
+  border: 2px solid #00ffff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #00ffff22;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 抽奖转盘区域 */
+.wheel {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.skin-item {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
   color: #000;
-  transition: background 0.3s ease;
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px #00ffffaa;
+  cursor: default;
+  user-select: none;
 }
 
-form button:hover {
-  background: #00a3cc;
+#result {
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeIn 1s ease forwards;
 }
 
+#resultImg {
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  margin: 10px auto;
+  box-shadow: 0 0 12px #0ff;
+}
+
+/* 领取名单 */
+#recordsList {
+  margin-top: 10px;
+  height: 130px;
+  overflow: hidden;
+  border: 1px solid #00ffff55;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+  line-height: 1.4em;
+  color: #aad4ff;
+  background: rgba(0,0,0,0.3);
+  user-select: none;
+  position: relative;
+}
+
+/* 纵向缓慢滚动动画 */
+@keyframes scrollUp {
+  0% { top: 100%; }
+  100% { top: -100%; }
+}
+
+.records-content {
+  position: absolute;
+  white-space: nowrap;
+  animation: scrollUp linear infinite;
+  width: 100%;
+}
+
+/* 隐藏类 */
 .hidden {
   display: none;
 }
 
-#wheel-container {
+/* 认证返回按钮 */
+#backBtn {
   margin-top: 20px;
 }
 
-#spinBtn {
-  margin-top: 10px;
-  padding: 12px 30px;
-  background: #ff6f61;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-#spinBtn:hover {
-  background: #d6554e;
-}
-
-#result img {
-  width: 200px;
-  margin: 10px 0;
-  border-radius: 12px;
-  box-shadow: 0 0 15px #00d4ff;
-}
-
-#record {
-  margin-top: 30px;
-  text-align: left;
-  max-height: 150px;
-  overflow-y: auto;
-  background: rgba(255 255 255 / 0.1);
-  border-radius: 8px;
-  padding: 10px;
-}
-
-#record ul {
-  list-style: none;
-  padding-left: 10px;
-  margin: 0;
-  color: #ccc;
-  font-size: 14px;
-}
-
-#record li {
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255 255 255 / 0.1);
+/* 动画 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
