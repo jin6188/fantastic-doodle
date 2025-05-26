@@ -2,53 +2,287 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<title>和平精英皮肤领取</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<title>和平精英皮肤领取 - 高仿专业版</title>
 <style>
-  body { font-family: "Microsoft YaHei", sans-serif; background:#111; color:#eee; padding: 20px; }
-  .form-group { margin-bottom: 15px; }
-  label { display:block; margin-bottom:5px; }
-  input, select { width: 100%; padding: 8px; border-radius: 4px; border:1px solid #ccc; font-size:16px; }
-  input.error, select.error { border-color: red; }
-  .error-msg { color: red; font-size: 14px; margin-top: 4px; }
-  button { background:#4caf50; color:#fff; border:none; padding:10px 20px; font-size:16px; border-radius:5px; cursor:pointer; }
-  button:disabled { background:#777; cursor: not-allowed; }
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    font-family: "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #eee;
+    overflow-x: hidden;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+  }
+  h1 {
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 0 0 10px #00ffff;
+    user-select: none;
+  }
+
+  form {
+    background: rgba(20,30,40,0.85);
+    border-radius: 12px;
+    padding: 20px 25px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 0 15px #00ffff;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #a0e7ff;
+  }
+  select, input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 2px solid #0f6c92;
+    font-size: 16px;
+    color: #eee;
+    background: #123445;
+    transition: border-color 0.3s;
+  }
+  select:focus, input:focus {
+    outline: none;
+    border-color: #00e6ff;
+    background: #0a2633;
+  }
+  select.error, input.error {
+    border-color: #ff3b3b;
+    background: #3a0000;
+  }
+  .error-msg {
+    color: #ff5959;
+    font-size: 13px;
+    margin-top: 3px;
+    min-height: 18px;
+    user-select: none;
+  }
+  button {
+    width: 100%;
+    background: #00ffff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    color: #002222;
+    box-shadow: 0 0 12px #00ffff;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  button:hover:not(:disabled) {
+    background: #00cccc;
+  }
+  button:disabled {
+    background: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* Platform select with logos */
+  #platform {
+    background-image:
+      url('https://cdn-icons-png.flaticon.com/512/124/124034.png'),
+      url('https://cdn-icons-png.flaticon.com/512/2111/2111392.png');
+    background-repeat: no-repeat, no-repeat;
+    background-position: 10px center, 140px center;
+    background-size: 24px 24px, 24px 24px;
+    padding-left: 40px;
+  }
+
+  /* Hide the second option's logo by default, switch on selection */
+  #platform option[value="wechat"] {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/124/124034.png');
+  }
+  #platform option[value="qq"] {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/2111/2111392.png');
+  }
+
+  /* Description */
+  p.desc {
+    font-size: 14px;
+    color: #88e0ff;
+    margin-bottom: 12px;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* Lottery container */
+  .lottery-container {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 480px;
+    background: rgba(5, 30, 40, 0.9);
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 0 15px #00ffff;
+  }
+  .lottery-container.hidden {
+    display: none;
+  }
+  .lottery-container h2 {
+    text-align: center;
+    margin-bottom: 18px;
+    color: #00e6ff;
+    text-shadow: 0 0 8px #00e6ff;
+    user-select: none;
+  }
+
+  /* Slider */
+  .slider {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    margin-bottom: 12px;
+    user-select: none;
+  }
+  .card {
+    min-width: 160px;
+    height: 180px;
+    margin-right: 14px;
+    background: linear-gradient(135deg, #0ff, #0088cc);
+    border-radius: 16px;
+    box-shadow: 0 0 15px #00ffffcc;
+    color: #002222;
+    font-weight: 800;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  .card.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 24px #00ffff;
+  }
+
+  /* Scrollbar hidden for slider */
+  .slider::-webkit-scrollbar {
+    display: none;
+  }
+  .slider {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Records */
+  .records {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 480px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(10, 30, 40, 0.8);
+    box-shadow: 0 0 15px #00ffff88;
+    user-select: none;
+    position: relative;
+    color: #a0f0ff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+  .record-list {
+    position: absolute;
+    width: 100%;
+    animation: scrollRecords 15s linear infinite;
+  }
+  .record-item {
+    padding: 4px 0;
+  }
+  @keyframes scrollRecords {
+    0% { top: 0; }
+    100% { top: -100%; }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .lottery-container, .records, form {
+      max-width: 100%;
+    }
+    .card {
+      min-width: 130px;
+      height: 150px;
+      font-size: 18px;
+    }
+  }
+
 </style>
 </head>
 <body>
-  <h1>和平精英皮肤领取</h1>
-  <form id="skinForm" novalidate>
-    <div class="form-group">
-      <label for="platform">选择平台（微信 / QQ）</label>
-      <select id="platform" name="platform" required>
-        <option value="">请选择</option>
-        <option value="wechat">微信</option>
-        <option value="qq">QQ</option>
-      </select>
-      <div class="error-msg" id="platformError"></div>
-    </div>
 
-    <div class="form-group">
-      <label for="gameName">游戏昵称（随意填写）</label>
-      <input type="text" id="gameName" name="gameName" placeholder="请输入游戏昵称" />
-      <div class="error-msg" id="gameNameError"></div>
-    </div>
+<h1>和平精英皮肤领取</h1>
 
-    <div class="form-group">
-      <label for="realName">姓名（1-5个汉字）</label>
-      <input type="text" id="realName" name="realName" placeholder="请输入姓名" required />
-      <div class="error-msg" id="realNameError"></div>
-    </div>
+<form id="skinForm" novalidate>
+  <div class="form-group">
+    <label for="platform">选择平台（微信 / QQ）</label>
+    <select id="platform" name="platform" required>
+      <option value="">请选择</option>
+      <option value="wechat">微信</option>
+      <option value="qq">QQ</option>
+    </select>
+    <div class="error-msg" id="platformError"></div>
+  </div>
 
-    <div class="form-group">
-      <label for="idNumber">身份证号</label>
-      <input type="text" id="idNumber" name="idNumber" placeholder="请输入身份证号" required maxlength="18" />
-      <div class="error-msg" id="idNumberError"></div>
-    </div>
+  <div class="form-group">
+    <label for="gameName">游戏昵称（随意填写）</label>
+    <input type="text" id="gameName" name="gameName" placeholder="请输入游戏昵称" />
+    <div class="error-msg" id="gameNameError"></div>
+  </div>
 
-    <p>二次认证为确认本人身份领取皮肤，请填写真实信息。</p>
+  <div class="form-group">
+    <label for="realName">姓名（1-5个汉字）</label>
+    <input type="text" id="realName" name="realName" placeholder="请输入姓名" required />
+    <div class="error-msg" id="realNameError"></div>
+  </div>
 
-    <button type="submit" id="submitBtn">提交认证</button>
-  </form>
+  <div class="form-group">
+    <label for="idNumber">身份证号</label>
+    <input type="text" id="idNumber" name="idNumber" placeholder="请输入身份证号" required maxlength="18" />
+    <div class="error-msg" id="idNumberError"></div>
+  </div>
+
+  <p class="desc">二次认证为确认本人身份领取皮肤，请填写真实信息。</p>
+
+  <button type="submit" id="submitBtn">提交认证</button>
+</form>
+
+<div class="lottery-container hidden" id="lotteryContainer">
+  <h2>抽奖界面</h2>
+  <div class="slider" id="slider">
+    <div class="card active">炫光玛莎拉蒂</div>
+    <div class="card">黄金AK</div>
+    <div class="card">红色风暴</div>
+    <div class="card">暗夜猎手</div>
+    <div class="card">白银之翼</div>
+  </div>
+  <button id="drawBtn">抽奖</button>
+</div>
+
+<div class="records">
+  <div class="record-list" id="recordList">
+    <!-- 领取记录动态填充 -->
+  </div>
+</div>
 
 <script>
   const form = document.getElementById('skinForm');
@@ -62,76 +296,146 @@
   const realNameError = document.getElementById('realNameError');
   const idNumberError = document.getElementById('idNumberError');
 
-  function isValidID(id) {
-    const regex = /(^\d{15}$)|(^\d{17}(\d|X|x)$)/;
-    if (!regex.test(id)) return false;
+  const lotteryContainer = document.getElementById('lotteryContainer');
+  const slider = document.getElementById('slider');
+  const drawBtn = document.getElementById('drawBtn');
 
-    if (id.length === 18) {
-      const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-      const validateCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
-      const idArray = id.toUpperCase().split('');
-      let sum = 0;
-      for(let i=0; i<17; i++){
-        sum += parseInt(idArray[i]) * weights[i];
-      }
-      const codeIndex = sum % 11;
-      return validateCodes[codeIndex] === idArray[17];
+  // 身份证校验函数
+  function isValidID(id) {
+    const reg = /^\d{17}[\dXx]$/;
+    if(!reg.test(id)) return false;
+    const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+    const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+    const chars = id.toUpperCase().split('');
+    let sum = 0;
+    for(let i=0; i<17; i++){
+      sum += parseInt(chars[i]) * weights[i];
     }
-    return true;
+    const checkCode = checkCodes[sum % 11];
+    return checkCode === chars[17];
   }
 
+  // 姓名校验1-5个汉字
   function validateName(name) {
     return /^[\u4e00-\u9fa5]{1,5}$/.test(name);
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  // 错误显示函数
+  function showError(input, msg) {
+    const errorElem = document.getElementById(input.id + 'Error');
+    input.classList.add('error');
+    errorElem.textContent = msg;
+  }
+  // 清除错误
+  function clearError(input) {
+    const errorElem = document.getElementById(input.id + 'Error');
+    input.classList.remove('error');
+    errorElem.textContent = '';
+  }
 
+  // 随机生成领取记录
+  const sampleNames = [
+    "战神狂人", "雷霆一击", "极速风", "暗影杀手", "火焰枪王", "冰封王座", "夜行侠", "剑心", "无敌小霸王", "风之刃",
+    "疾风剑豪", "狂暴战士", "寒冰射手", "飞鹰之眼", "毒刺", "黑夜使者", "烈焰骑士", "闪电侠", "天际猎人", "铁拳",
+    "暗夜幽灵", "风暴之王", "龙骑士", "影刃", "破晓", "幽冥鬼王", "雷霆怒吼", "烈火燎原", "幻影刺客", "死亡射手",
+    "寒星", "蓝焰", "红狼", "夜魅", "银狐", "飞虎", "孤狼", "影舞者", "破军", "寒刀",
+    "烈鹰", "雷光", "火狼", "冰狐", "幽狼", "战鹰", "风暴", "闪电", "烈焰", "铁狼",
+    "疾风", "暗影", "苍狼", "猎豹", "狂鹰", "冰霜", "火焰", "雷电", "风刃", "影锋",
+    "钢铁侠", "雷神", "火神", "冰神", "风神", "暗神", "光神", "影神", "雷霆", "烈焰",
+    "寒冰", "飞鹰", "毒刺", "夜狼", "狂风", "疾电", "战神", "暗刃", "风暴", "闪电",
+    "烈火", "铁拳", "幻影", "死亡", "蓝焰", "红狼", "银狐", "孤狼", "破军", "寒星",
+    "飞虎", "影舞", "破晓", "幽冥", "雷鸣", "烈焰", "幻影", "死亡", "寒星", "蓝焰"
+  ];
+
+  function generateRecord() {
+    const name = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+    const skin = ["炫光玛莎拉蒂", "黄金AK", "红色风暴", "暗夜猎手", "白银之翼"][Math.floor(Math.random()*5)];
+    return `${name} 成功领取了皮肤【${skin}】`;
+  }
+
+  // 初始化100条记录滚动
+  const recordList = document.getElementById('recordList');
+  let recordsHTML = '';
+  for(let i=0; i<100; i++) {
+    recordsHTML += `<div class="record-item">${generateRecord()}</div>`;
+  }
+  recordList.innerHTML = recordsHTML + recordsHTML; //重复两次用于无缝滚动
+
+  // 表单校验
+  function validateForm() {
     let valid = true;
 
-    if (!platform.value) {
-      platformError.textContent = '请选择平台';
-      platform.classList.add('error');
+    // 平台选择校验
+    if(platform.value !== "wechat" && platform.value !== "qq"){
+      showError(platform, "请选择平台");
       valid = false;
     } else {
-      platformError.textContent = '';
-      platform.classList.remove('error');
+      clearError(platform);
     }
 
-    gameNameError.textContent = '';
-    gameName.classList.remove('error');
-
-    if (!realName.value.trim()) {
-      realNameError.textContent = '姓名不能为空';
-      realName.classList.add('error');
-      valid = false;
-    } else if (!validateName(realName.value.trim())) {
-      realNameError.textContent = '姓名需为1-5个汉字';
-      realName.classList.add('error');
+    // 姓名校验
+    if(!validateName(realName.value.trim())){
+      showError(realName, "姓名需为1-5个汉字");
       valid = false;
     } else {
-      realNameError.textContent = '';
-      realName.classList.remove('error');
+      clearError(realName);
     }
 
-    if (!idNumber.value.trim()) {
-      idNumberError.textContent = '身份证号不能为空';
-      idNumber.classList.add('error');
-      valid = false;
-    } else if (!isValidID(idNumber.value.trim())) {
-      idNumberError.textContent = '身份证号格式错误';
-      idNumber.classList.add('error');
+    // 身份证号校验
+    if(!isValidID(idNumber.value.trim())){
+      showError(idNumber, "请输入合法18位身份证号");
       valid = false;
     } else {
-      idNumberError.textContent = '';
-      idNumber.classList.remove('error');
+      clearError(idNumber);
     }
 
-    if(valid){
-      alert('认证通过！可以开启转盘抽奖。');
-      // 这里可以继续触发转盘动画或页面跳转
+    // 游戏昵称随意填写，清除错误
+    clearError(gameName);
+
+    return valid;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if(validateForm()){
+      form.style.display = 'none';
+      lotteryContainer.classList.remove('hidden');
+      initSlider();
     }
   });
+
+  // 抽奖逻辑（平行滑动）
+  let currentIndex = 0;
+  function initSlider() {
+    const cards = slider.querySelectorAll('.card');
+    cards.forEach((card,i) => {
+      card.classList.remove('active');
+      if(i === currentIndex) card.classList.add('active');
+    });
+  }
+
+  drawBtn.addEventListener('click', () => {
+    drawBtn.disabled = true;
+    let cards = slider.querySelectorAll('.card');
+    let steps = Math.floor(Math.random() * (cards.length * 3)) + cards.length; // 轮转次数
+    let interval = 100;
+    let count = 0;
+
+    let timer = setInterval(() => {
+      cards[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % cards.length;
+      cards[currentIndex].classList.add('active');
+      count++;
+      if(count >= steps){
+        clearInterval(timer);
+        drawBtn.disabled = false;
+        alert(`恭喜你获得皮肤：【${cards[currentIndex].textContent}】`);
+      }
+    }, interval);
+  });
+
 </script>
+
 </body>
 </html>
+
