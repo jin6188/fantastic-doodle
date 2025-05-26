@@ -1,74 +1,138 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>和平精英皮肤领取</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<title>和平精英皮肤领取</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; background:#111; color:#eee; padding: 20px; }
+  .form-group { margin-bottom: 15px; }
+  label { display:block; margin-bottom:5px; }
+  input, select { width: 100%; padding: 8px; border-radius: 4px; border:1px solid #ccc; font-size:16px; }
+  input.error, select.error { border-color: red; }
+  .error-msg { color: red; font-size: 14px; margin-top: 4px; }
+  button { background:#4caf50; color:#fff; border:none; padding:10px 20px; font-size:16px; border-radius:5px; cursor:pointer; }
+  button:disabled { background:#777; cursor: not-allowed; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>和平精英皮肤领取</h1>
-    
-    <section id="authSection">
-      <h2>选择领取区服</h2>
-      <div class="account-options">
-        <label class="account-option">
-          <input type="radio" name="accountType" value="wechat" checked />
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAACn3w1NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAArklEQVRIie3WsQ3CMAwF0LP/z9ahYt9RoWtg9uINBBJgHJ3lCC9CDdyYgpJOdFnOaJdVZ4Lws8vYIl+x7UYdTfFJhRyAUSnp8Bc+h1m98ORSC5dPPrmfXTdQ7QT7ghcRo4/YBSfMlS94tNIfQVnpKUDeqDMd4ANhDJC4jUKYjPYDGc2qPOfAmAzf6NIGT9GON6HNDnCI6icRklI/YHJ3nq2DC9UrXYXn98zzSwqplr3PN9UO5wD53+tYNbqEaJkgAAAABJRU5ErkJggg==" alt="微信" />
-          微信区
-        </label>
-        <label class="account-option">
-          <input type="radio" name="accountType" value="qq" />
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAACn3w1NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAdklEQVRIie3UQQoAIAwDwPP/06hM4KQ7h1cZTAYmTJQJGPONelUgdyczS7PJFZaycAp72VpZk4iMMLxqQXhAAxiiAjZBF7AFcEW8rGQQhjkdW6A4N2CITU/AgbAFJcMWQv4xk5JYGVmSMLPi0IxRzxkY8ACe9cxGUV9M9f4J+iijjTkUOx0ytfQAAAABJRU5ErkJggg==" alt="QQ" />
-          QQ区
-        </label>
-      </div>
+  <h1>和平精英皮肤领取</h1>
+  <form id="skinForm" novalidate>
+    <div class="form-group">
+      <label for="platform">选择平台（微信 / QQ）</label>
+      <select id="platform" name="platform" required>
+        <option value="">请选择</option>
+        <option value="wechat">微信</option>
+        <option value="qq">QQ</option>
+      </select>
+      <div class="error-msg" id="platformError"></div>
+    </div>
 
-      <form id="infoForm">
-        <label>游戏昵称：
-          <input type="text" id="gameName" placeholder="请输入游戏昵称" required />
-        </label>
-        <label>姓名：
-          <input type="text" id="realName" placeholder="请输入您的姓名" required />
-        </label>
-        <label>身份证号：
-          <input type="text" id="idNumber" placeholder="请输入身份证号码" required pattern="\\d{15}|\\d{18}" />
-        </label>
-        <p class="notice">
-          二次认证为确认本人身份领取皮肤，确保账号安全，请务必填写真实信息。
-        </p>
-        <button type="submit" id="submitBtn">提交认证</button>
-      </form>
-    </section>
+    <div class="form-group">
+      <label for="gameName">游戏昵称（随意填写）</label>
+      <input type="text" id="gameName" name="gameName" placeholder="请输入游戏昵称" />
+      <div class="error-msg" id="gameNameError"></div>
+    </div>
 
-    <section id="lotterySection" class="hidden">
-      <h2>皮肤抽奖转盘</h2>
-      <div id="wheel" class="wheel">
-        <!-- 抽奖皮肤项 -->
-        <div class="skin-item" style="background:#1abc9c;"><p>幻影枪战</p></div>
-        <div class="skin-item" style="background:#3498db;"><p>雷霆出击</p></div>
-        <div class="skin-item" style="background:#9b59b6;"><p>烈焰之刃</p></div>
-        <div class="skin-item" style="background:#e67e22;"><p>寒冰战士</p></div>
-        <div class="skin-item" style="background:#e74c3c;"><p>风暴突击</p></div>
-        <div class="skin-item" style="background:#34495e;"><p>夜幕幽灵</p></div>
-      </div>
-      <button id="spinBtn">开始抽奖</button>
+    <div class="form-group">
+      <label for="realName">姓名（1-5个汉字）</label>
+      <input type="text" id="realName" name="realName" placeholder="请输入姓名" required />
+      <div class="error-msg" id="realNameError"></div>
+    </div>
 
-      <div id="result" class="hidden">
-        <h3>恭喜获得皮肤：</h3>
-        <div id="resultImg"></div>
-        <p id="resultName"></p>
-        <button id="backBtn">返回认证页</button>
-      </div>
-    </section>
+    <div class="form-group">
+      <label for="idNumber">身份证号</label>
+      <input type="text" id="idNumber" name="idNumber" placeholder="请输入身份证号" required maxlength="18" />
+      <div class="error-msg" id="idNumberError"></div>
+    </div>
 
-    <section id="recordsSection">
-      <h2>最近领取名单</h2>
-      <div id="recordsList"></div>
-    </section>
-  </div>
+    <p>二次认证为确认本人身份领取皮肤，请填写真实信息。</p>
 
-  <script src="script.js"></script>
+    <button type="submit" id="submitBtn">提交认证</button>
+  </form>
+
+<script>
+  const form = document.getElementById('skinForm');
+  const platform = document.getElementById('platform');
+  const gameName = document.getElementById('gameName');
+  const realName = document.getElementById('realName');
+  const idNumber = document.getElementById('idNumber');
+
+  const platformError = document.getElementById('platformError');
+  const gameNameError = document.getElementById('gameNameError');
+  const realNameError = document.getElementById('realNameError');
+  const idNumberError = document.getElementById('idNumberError');
+
+  function isValidID(id) {
+    const regex = /(^\d{15}$)|(^\d{17}(\d|X|x)$)/;
+    if (!regex.test(id)) return false;
+
+    if (id.length === 18) {
+      const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+      const validateCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+      const idArray = id.toUpperCase().split('');
+      let sum = 0;
+      for(let i=0; i<17; i++){
+        sum += parseInt(idArray[i]) * weights[i];
+      }
+      const codeIndex = sum % 11;
+      return validateCodes[codeIndex] === idArray[17];
+    }
+    return true;
+  }
+
+  function validateName(name) {
+    return /^[\u4e00-\u9fa5]{1,5}$/.test(name);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let valid = true;
+
+    if (!platform.value) {
+      platformError.textContent = '请选择平台';
+      platform.classList.add('error');
+      valid = false;
+    } else {
+      platformError.textContent = '';
+      platform.classList.remove('error');
+    }
+
+    gameNameError.textContent = '';
+    gameName.classList.remove('error');
+
+    if (!realName.value.trim()) {
+      realNameError.textContent = '姓名不能为空';
+      realName.classList.add('error');
+      valid = false;
+    } else if (!validateName(realName.value.trim())) {
+      realNameError.textContent = '姓名需为1-5个汉字';
+      realName.classList.add('error');
+      valid = false;
+    } else {
+      realNameError.textContent = '';
+      realName.classList.remove('error');
+    }
+
+    if (!idNumber.value.trim()) {
+      idNumberError.textContent = '身份证号不能为空';
+      idNumber.classList.add('error');
+      valid = false;
+    } else if (!isValidID(idNumber.value.trim())) {
+      idNumberError.textContent = '身份证号格式错误';
+      idNumber.classList.add('error');
+      valid = false;
+    } else {
+      idNumberError.textContent = '';
+      idNumber.classList.remove('error');
+    }
+
+    if(valid){
+      alert('认证通过！可以开启转盘抽奖。');
+      // 这里可以继续触发转盘动画或页面跳转
+    }
+  });
+</script>
 </body>
 </html>
+
