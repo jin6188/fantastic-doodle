@@ -7,32 +7,66 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="particle-bg"></div>
-
   <div class="container">
-    <h1>和平精英皮肤领取中心</h1>
+    <h1>和平精英皮肤领取</h1>
+    
+    <section id="authSection">
+      <h2>选择领取区服</h2>
+      <div class="account-options">
+        <label class="account-option">
+          <input type="radio" name="accountType" value="wechat" checked />
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAACn3w1NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAArklEQVRIie3WsQ3CMAwF0LP/z9ahYt9RoWtg9uINBBJgHJ3lCC9CDdyYgpJOdFnOaJdVZ4Lws8vYIl+x7UYdTfFJhRyAUSnp8Bc+h1m98ORSC5dPPrmfXTdQ7QT7ghcRo4/YBSfMlS94tNIfQVnpKUDeqDMd4ANhDJC4jUKYjPYDGc2qPOfAmAzf6NIGT9GON6HNDnCI6icRklI/YHJ3nq2DC9UrXYXn98zzSwqplr3PN9UO5wD53+tYNbqEaJkgAAAABJRU5ErkJggg==" alt="微信" />
+          微信区
+        </label>
+        <label class="account-option">
+          <input type="radio" name="accountType" value="qq" />
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAACn3w1NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAdklEQVRIie3UQQoAIAwDwPP/06hM4KQ7h1cZTAYmTJQJGPONelUgdyczS7PJFZaycAp72VpZk4iMMLxqQXhAAxiiAjZBF7AFcEW8rGQQhjkdW6A4N2CITU/AgbAFJcMWQv4xk5JYGVmSMLPi0IxRzxkY8ACe9cxGUV9M9f4J+iijjTkUOx0ytfQAAAABJRU5ErkJggg==" alt="QQ" />
+          QQ区
+        </label>
+      </div>
 
-    <form id="authForm">
-      <input type="text" id="gameId" placeholder="请输入游戏ID" required />
-      <input type="text" id="realName" placeholder="请输入实名信息" required />
-      <button type="submit">实名认证</button>
-    </form>
+      <form id="infoForm">
+        <label>游戏昵称：
+          <input type="text" id="gameName" placeholder="请输入游戏昵称" required />
+        </label>
+        <label>姓名：
+          <input type="text" id="realName" placeholder="请输入您的姓名" required />
+        </label>
+        <label>身份证号：
+          <input type="text" id="idNumber" placeholder="请输入身份证号码" required pattern="\\d{15}|\\d{18}" />
+        </label>
+        <p class="notice">
+          二次认证为确认本人身份领取皮肤，确保账号安全，请务必填写真实信息。
+        </p>
+        <button type="submit" id="submitBtn">提交认证</button>
+      </form>
+    </section>
 
-    <div id="wheel-container" class="hidden">
-      <canvas id="wheel" width="400" height="400"></canvas>
+    <section id="lotterySection" class="hidden">
+      <h2>皮肤抽奖转盘</h2>
+      <div id="wheel" class="wheel">
+        <!-- 抽奖皮肤项 -->
+        <div class="skin-item" style="background:#1abc9c;"><p>幻影枪战</p></div>
+        <div class="skin-item" style="background:#3498db;"><p>雷霆出击</p></div>
+        <div class="skin-item" style="background:#9b59b6;"><p>烈焰之刃</p></div>
+        <div class="skin-item" style="background:#e67e22;"><p>寒冰战士</p></div>
+        <div class="skin-item" style="background:#e74c3c;"><p>风暴突击</p></div>
+        <div class="skin-item" style="background:#34495e;"><p>夜幕幽灵</p></div>
+      </div>
       <button id="spinBtn">开始抽奖</button>
-    </div>
 
-    <div id="result" class="hidden">
-      <h2>恭喜获得皮肤：</h2>
-      <img id="skin-img" src="" alt="皮肤" />
-      <p id="skin-name"></p>
-    </div>
+      <div id="result" class="hidden">
+        <h3>恭喜获得皮肤：</h3>
+        <div id="resultImg"></div>
+        <p id="resultName"></p>
+        <button id="backBtn">返回认证页</button>
+      </div>
+    </section>
 
-    <div id="record">
-      <h3>最新领取记录</h3>
-      <ul id="recordList"></ul>
-    </div>
+    <section id="recordsSection">
+      <h2>最近领取名单</h2>
+      <div id="recordsList"></div>
+    </section>
   </div>
 
   <script src="script.js"></script>
