@@ -1,0 +1,106 @@
+/* 太空能量背景粒子 */
+#particle-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, #020024 0%, #090979 35%, #00d4ff 100%);
+  overflow: hidden;
+  z-index: -1;
+}
+
+/* 粒子效果用canvas容器 */
+.container {
+  position: relative;
+  max-width: 480px;
+  margin: 40px auto;
+  background: rgba(0,0,0,0.65);
+  padding: 20px;
+  border-radius: 12px;
+  color: #fff;
+  font-family: "Microsoft YaHei", sans-serif;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+form input {
+  width: 80%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+form button {
+  padding: 12px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  background: #00d4ff;
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #00a3cc;
+}
+
+.hidden {
+  display: none;
+}
+
+#wheel-container {
+  margin-top: 20px;
+}
+
+#spinBtn {
+  margin-top: 10px;
+  padding: 12px 30px;
+  background: #ff6f61;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#spinBtn:hover {
+  background: #d6554e;
+}
+
+#result img {
+  width: 200px;
+  margin: 10px 0;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00d4ff;
+}
+
+#record {
+  margin-top: 30px;
+  text-align: left;
+  max-height: 150px;
+  overflow-y: auto;
+  background: rgba(255 255 255 / 0.1);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+#record ul {
+  list-style: none;
+  padding-left: 10px;
+  margin: 0;
+  color: #ccc;
+  font-size: 14px;
+}
+
+#record li {
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255 255 255 / 0.1);
+}
