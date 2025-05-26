@@ -1,193 +1,167 @@
-// 粒子背景动画
-const particleCount = 100;
-const particleBg = document.getElementById("particle-bg");
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-particleBg.appendChild(canvas);
-
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.radius = Math.random() * 1.5 + 0.5;
-    this.speedX = (Math.random() - 0.5) * 0.5;
-    this.speedY = (Math.random() - 0.5) * 0.5;
-    this.alpha = Math.random() * 0.5 + 0.3;
-  }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if(this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
-    if(this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(0,212,255,${this.alpha})`;
-    ctx.fill();
-  }
-}
-
-const particles = [];
-for(let i=0; i<particleCount; i++) {
-  particles.push(new Particle());
-}
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-  requestAnimationFrame(animate);
-}
-animate();
-
-// 轮盘抽奖逻辑
+// 皮肤数据（名字 + 颜色）
 const skins = [
-  {name:"银河战舰", img:"assets/skin1.png"},
-  {name:"极光跑车", img:"assets/skin2.png"},
-  {name:"烈焰狂飙", img:"assets/skin3.png"},
-  {name:"星际战甲", img:"assets/skin4.png"},
-  {name:"暗影幽灵", img:"assets/skin5.png"},
-  {name:"雷霆战车", img:"assets/skin6.png"},
+  {name:"幻影枪战", color:"#1abc9c"},
+  {name:"雷霆出击", color:"#3498db"},
+  {name:"烈焰之刃", color:"#9b59b6"},
+  {name:"寒冰战士", color:"#e67e22"},
+  {name:"风暴突击", color:"#e74c3c"},
+  {name:"夜幕幽灵", color:"#34495e"},
 ];
 
-const wheelCanvas = document.getElementById("wheel");
-const ctxWheel = wheelCanvas.getContext("2d");
+// 生成随机领取名单的游戏名示例
+const sampleNames = [
+  "雷霆王者","火焰使者","风暴猎手","暗夜刺客","幻影枪神",
+  "寒冰战魂","烈焰战狼","狂暴战士","疾风剑客","黑夜幽灵",
+  "闪电侠","破晓先锋","烈火焚城","冰封战神","雷电狂徒",
+  "天空守护","暗影猎人","终结者","光明骑士","龙之传人"
+];
+
+// DOM元素
+const authSection = document.getElementById("authSection");
+const lotterySection = document.getElementById("lotterySection");
+const recordsList = document.getElementById("recordsList");
+
+const infoForm = document.getElementById("infoForm");
 const spinBtn = document.getElementById("spinBtn");
 const resultDiv = document.getElementById("result");
-const skinImg = document.getElementById("skin-img");
-const skinName = document.getElementById("skin-name");
-const recordList = document.getElementById("recordList");
+const resultImg = document.getElementById("resultImg");
+const resultName = document.getElementById("resultName");
+const backBtn = document.getElementById("backBtn");
 
-let startAngle = 0;
-const arc = Math.PI * 2 / skins.length;
-let spinTimeout = null;
-let spinArcStart = 0;
-let spinTime = 0;
-let spinTimeTotal = 0;
+let isSpinning = false;
 
-function drawWheel() {
-  ctxWheel.clearRect(0,0,wheelCanvas.width,wheelCanvas.height);
-  ctxWheel.strokeStyle = "#000";
-  ctxWheel.lineWidth = 2;
-  ctxWheel.font = "bold 16px Microsoft YaHei";
-  ctxWheel.textAlign = "center";
-  ctxWheel.textBaseline = "middle";
-
-  for(let i=0; i<skins.length; i++) {
-    const angle = startAngle + i * arc;
-    ctxWheel.fillStyle = i % 2 === 0 ? "#00d4ff" : "#0077aa";
-    ctxWheel.beginPath();
-    ctxWheel.moveTo(wheelCanvas.width/2, wheelCanvas.height/2);
-    ctxWheel.arc(wheelCanvas.width/2, wheelCanvas.height/2, wheelCanvas.width/2 - 10, angle, angle + arc, false);
-    ctxWheel.lineTo(wheelCanvas.width/2, wheelCanvas.height/2);
-    ctxWheel.fill();
-    ctxWheel.stroke();
-
-    // 绘制文字
-    ctxWheel.save();
-    ctxWheel.translate(
-      wheelCanvas.width/2 + Math.cos(angle + arc/2) * (wheelCanvas.width/2 - 70),
-      wheelCanvas.height/2 + Math.sin(angle + arc/2) * (wheelCanvas.height/2 - 70)
-    );
-    ctxWheel.rotate(angle + arc/2 + Math.PI/2);
-    ctxWheel.fillStyle = "#fff";
-    ctxWheel.fillText(skins[i].name, 0, 0);
-    ctxWheel.restore();
-  }
-
-  // 指针
-  ctxWheel.fillStyle = "#ff4136";
-  ctxWheel.beginPath();
-  ctxWheel.moveTo(wheelCanvas.width/2 - 10, 10);
-  ctxWheel.lineTo(wheelCanvas.width/2 + 10, 10);
-  ctxWheel.lineTo(wheelCanvas.width/2, 40);
-  ctxWheel.fill();
-}
-
-function spin() {
-  spinBtn.disabled = true;
-  spinTime = 0;
-  spinTimeTotal = Math.random() * 3 + 4 * 1000; // 4-7秒
-  rotateWheel();
-}
-
-function rotateWheel() {
-  spinTime += 30;
-  if(spinTime >= spinTimeTotal){
-    stopRotateWheel();
-    return;
-  }
-  const spinAngle = easeOut(spinTime, 0, 10, spinTimeTotal);
-  startAngle += (spinAngle * Math.PI/180);
-  drawWheel();
-  spinTimeout = setTimeout(rotateWheel, 30);
-}
-
-function stopRotateWheel() {
-  clearTimeout(spinTimeout);
-  const degrees = startAngle * 180/Math.PI + 90;
-  const arcd = arc * 180/Math.PI;
-  const index = Math.floor((360 - (degrees % 360)) / arcd) % skins.length;
-  showResult(index);
-  spinBtn.disabled = false;
-}
-
-function easeOut(t, b, c, d) {
-  const ts=(t/=d)*t;
-  const tc=ts*t;
-  return b+c*(tc + -3*ts + 3*t);
-}
-
-function showResult(index) {
-  const skin = skins[index];
-  skinImg.src = skin.img;
-  skinName.textContent = skin.name;
-  resultDiv.classList.remove("hidden");
-
-  addRecord(skin.name);
-}
-
-function addRecord(skinName) {
-  const li = document.createElement("li");
-  li.textContent = `玩家${randomId()}领取了【${skinName}】皮肤`;
-  recordList.prepend(li);
-  if(recordList.children.length > 20) {
-    recordList.removeChild(recordList.lastChild);
-  }
-}
-
-function randomId() {
-  return 'QPE' + Math.floor(100000 + Math.random()*900000);
-}
-
-drawWheel();
-
-// 认证与抽奖流程
-const authForm = document.getElementById("authForm");
-const wheelContainer = document.getElementById("wheel-container");
-
-authForm.addEventListener("submit", (e) => {
+// 认证表单提交处理
+infoForm.addEventListener("submit", e => {
   e.preventDefault();
-  const gameId = document.getElementById("gameId").value.trim();
+
+  // 简单验证
+  const gameName = document.getElementById("gameName").value.trim();
   const realName = document.getElementById("realName").value.trim();
-  if(!gameId || !realName) {
-    alert("请填写完整信息");
+  const idNumber = document.getElementById("idNumber").value.trim();
+  const accountType = document.querySelector('input[name="accountType"]:checked').value;
+
+  if (!gameName || !realName || !idNumber) {
+    alert("请填写所有信息");
     return;
   }
-  alert("实名认证成功！开始抽奖吧！");
-  authForm.classList.add("hidden");
-  wheelContainer.classList.remove("hidden");
+
+  // 身份证简单格式校验
+  if (!/^\d{15}$/.test(idNumber) && !/^\d{18}$/.test(idNumber)) {
+    alert("请输入正确的身份证号码");
+    return;
+  }
+
+  // 模拟提交认证（这里你可以改成真实接口）
+  spinBtn.disabled = false;
+  alert("认证成功！现在可以开始抽奖了。");
+  authSection.classList.add("hidden");
+  lotterySection.classList.remove("hidden");
+  resultDiv.classList.add("hidden");
 });
 
-spinBtn.addEventListener("click", spin);
+// 抽奖按钮
+spinBtn.addEventListener("click", () => {
+  if (isSpinning) return;
+  isSpinning = true;
+  spinBtn.disabled = true;
 
-// 窗口大小改变调整canvas大小
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  // 模拟炫酷平行滑动动画（这里用简单的闪烁+选中效果演示）
+  const wheel = document.getElementById("wheel");
+  let highlightIndex = 0;
+  let speed = 100;
+  let totalCycles = 30;
+  let currentCycle = 0;
+
+  const interval = setInterval(() => {
+    // 移除之前高亮
+    [...wheel.children].forEach((child, idx) => {
+      child.style.boxShadow = "0 0 8px #00ffffaa";
+      if (idx === highlightIndex) {
+        child.style.boxShadow = "0 0 15px 5px #00ffff";
+      }
+    });
+
+    highlightIndex = (highlightIndex + 1) % skins.length;
+    currentCycle++;
+
+    if (currentCycle >= totalCycles) {
+      clearInterval(interval);
+      // 抽奖结果
+      const winIndex = Math.floor(Math.random() * skins.length);
+
+      // 展示结果
+      const winSkin = skins[winIndex];
+      resultImg.style.backgroundColor = winSkin.color;
+      resultName.textContent = winSkin.name;
+      resultDiv.classList.remove("hidden");
+
+      // 加入领取名单
+      addRecord(gameNameFromForm(), winSkin.name);
+
+      isSpinning = false;
+      spinBtn.disabled = false;
+    }
+  }, speed);
 });
+
+// 返回认证页按钮
+backBtn.addEventListener("click", () => {
+  lotterySection.classList.add("hidden");
+  authSection.classList.remove("hidden");
+  resultDiv.classList.add("hidden");
+});
+
+// 获取当前游戏昵称（表单或缓存）
+function gameNameFromForm() {
+  return document.getElementById("gameName").value.trim() || "匿名玩家";
+}
+
+// 生成并展示随机领取名单（100条）
+function generateRecords() {
+  let records = [];
+  for (let i = 0; i < 100; i++) {
+    const player = sampleNames[Math.floor(Math.random() * sampleNames.length)] + Math.floor(Math.random() * 999);
+    const skin = skins[Math.floor(Math.random() * skins.length)].name;
+    records.push(`${player} 领取了皮肤【${skin}】`);
+  }
+  return records;
+}
+
+// 滚动名单内容
+function createScrollingRecords() {
+  const records = generateRecords();
+
+  // 清空旧内容
+  recordsList.innerHTML = "";
+
+  // 创建内容div，绝对定位做垂直滚动
+  const contentDiv = document.createElement("div");
+  contentDiv.className = "records-content";
+  contentDiv.style.animationDuration = `${records.length * 1.5}s`;
+
+  // 拼接内容，换行
+  contentDiv.innerHTML = records.map(r => `<div>${r}</div>`).join("");
+
+  recordsList.appendChild(contentDiv);
+}
+
+// 新领取加入名单顶部
+function addRecord(name, skin) {
+  const newRecord = `${name} 领取了皮肤【${skin}】`;
+
+  const contentDiv = recordsList.querySelector(".records-content");
+  if (!contentDiv) return;
+
+  const newDiv = document.createElement("div");
+  newDiv.textContent = newRecord;
+
+  contentDiv.insertBefore(newDiv, contentDiv.firstChild);
+
+  // 移除最后一个，保持100条
+  if (contentDiv.children.length > 100) {
+    contentDiv.removeChild(contentDiv.lastChild);
+  }
+}
+
+// 初始化名单滚动
+createScrollingRecords();
