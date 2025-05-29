@@ -1,431 +1,178 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>和平精英皮肤领取</title>
-<style>
-  body,html {
-    margin:0; padding:0; height:100%;
-    font-family: "Microsoft Yahei", sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #eee;
-    overflow-x: hidden;
-  }
-  .container {
-    max-width: 420px;
-    margin: 30px auto;
-    background: rgba(0,0,0,0.7);
-    border-radius: 8px;
-    padding: 20px;
-    min-height: 600px;
-    box-sizing: border-box;
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: 700;
-  }
-  .select-area {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 20px;
-  }
-  .select-item {
-    cursor: pointer;
-    padding: 10px 15px;
-    background: rgba(255 255 255 / 0.15);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background-color 0.3s ease;
-  }
-  .select-item.selected, .select-item:hover {
-    background: #2ecc71;
-  }
-  .select-item img {
-    width: 24px;
-    height: 24px;
-  }
-  label {
-    display: block;
-    margin-top: 12px;
-    font-weight: 600;
-  }
-  input[type=text] {
-    width: 100%;
-    margin-top: 6px;
-    padding: 8px;
-    border-radius: 4px;
-    border: none;
-    outline: none;
-    font-size: 15px;
-  }
-  input[type=text].error {
-    border: 2px solid #e74c3c;
-  }
-  .error-msg {
-    color: #e74c3c;
-    font-size: 13px;
-    margin-top: 4px;
-  }
-  .info {
-    font-size: 13px;
-    margin: 15px 0;
-    line-height: 1.4;
-    background: #333;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  button {
-    width: 100%;
-    padding: 12px 0;
-    font-size: 18px;
-    font-weight: 700;
-    border: none;
-    border-radius: 6px;
-    background: #27ae60;
-    color: white;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.3s ease;
-  }
-  button:disabled {
-    background: #555;
-    cursor: not-allowed;
-  }
-  /* 流动名单区域 */
-  .list-area {
-    margin-top: 25px;
-    height: 100px;
-    overflow: hidden;
-    background: rgba(0,0,0,0.3);
-    border-radius: 6px;
-    color: #b2ff59;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  .list-scroll {
-    display: inline-block;
-    white-space: nowrap;
-    animation: scroll-left 20s linear infinite;
-  }
-  @keyframes scroll-left {
-    0% {
-      transform: translateX(100%);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>和平精英皮肤领取</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #1e1f25, #3d4d91, #2d91c2);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      color: white;
     }
-    100% {
-      transform: translateX(-100%);
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
-  }
-  /* 抽奖页面隐藏控制 */
-  .hidden {
-    display: none;
-  }
 
-  /* 抽奖容器 */
-  #lotteryContainer {
-    text-align: center;
-  }
-  #wheelWrapper {
-    overflow: hidden;
-    margin: 20px 0 40px;
-    border: 2px solid #27ae60;
-    border-radius: 12px;
-    background: rgba(0,0,0,0.8);
-  }
-  #wheel {
-    display: flex;
-    transition: transform 1s ease-out;
-    will-change: transform;
-  }
-  #wheel img {
-    width: 120px;
-    height: 120px;
-    margin: 10px;
-    border-radius: 12px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: border-color 0.3s;
-  }
-  #wheel img.active {
-    border-color: #2ecc71;
-  }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
 
-  #btnReturn {
-    margin-top: 10px;
-    background: #e74c3c;
-  }
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #ffd700;
+    }
 
-  /* 抽奖开始按钮 */
-  #btnStart {
-    background: #3498db;
-  }
-</style>
+    label {
+      display: block;
+      margin-top: 16px;
+      font-size: 16px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    select {
+      background-color: #eee;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .logo-group img {
+      height: 24px;
+      width: 24px;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 24px;
+      font-size: 16px;
+      background-color: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffb800;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      display: block;
+      text-align: center;
+      color: #aaa;
+      text-decoration: underline;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<div class="container" id="formContainer">
-  <h1>和平精英皮肤领取</h1>
-  
-  <div class="select-area" id="selectArea">
-    <div class="select-item selected" data-type="wechat" tabindex="0">
-      <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI4IDEyLjU0YTIgMiAwIDAgMC0yLTIuMTRoLTIuNzJhMSAxIDAgMCAxLS44LS44bC0uNjItMi4xMmExLjAxIDEuMDEgMCAwIDAtMS4wOC0uNjJoLTkuMjRhMiAyIDAgMCAwLTItMi4xNGExIDEgMCAwIDAtMS4yMi0xLjAxIDYuODMgNi44MyAwIDAgMC0zLjggMS4yOGwtMS4yNSAxLjE0YTEgMSAwIDAgMC0uMjUuNzMgMTAgMTAgMCAwIDAtLjA3IDIuNzV2LjA0YS41Ny41NyAwIDAgMCAuMTQuMzYgMSAxIDAgMCAwIC40LjYxIDMuMjkgMy4yOSAwIDAgMCAxLjQzIDIuMTMgNi44NCA2Ljg0IDAgMCAwIDEuNDUgLjcgMSAxIDAgMCAwIC42OCAwIDEuMjMgMS4yMyAwIDAgMCAxLjA2LTEuNjhBMy4xIDMuMSAwIDAgMCAxNyAyOWMuMyAwIC42LS4xNi43LS40M2EuOTYuOTYgMCAwIDAgLjEtLjQxVjI4YTIuMzMgMi4zMyAwIDAgMSAyLjI1LTJsMy4wNy0xLjU2YTEgMSAwIDAgMCAuNjItLjY4eiIvPjwvc3ZnPg==" alt="微信Logo" />
-      微信区
+  <div class="container">
+    <h2>和平精英皮肤领取</h2>
+
+    <label for="area">请选择登录区服</label>
+    <select id="area">
+      <option value="">请选择</option>
+      <option value="wechat">微信区</option>
+      <option value="qq">QQ区</option>
+    </select>
+    <div class="logo-group">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAgCAYAAACo1a6zAAAABHNCSVQICAgIfAhkiAAAAJpJREFUSA3t1rEJgkAUhOH/ybKkq3ZJAjBzZsEwMAvYwcKhqv1Tw3opT/mWBgGgJPQMsU+RKPQd1K1m1Blj5VQoq9c5okYcH8WEuWitWc+3KyYErfMgZAdHJymbDCAXAkKQcGkgId1spFuclIo4UdKSOEQbmw1W6KR3ABAlEMiGu0TXYAAAAASUVORK5CYII=" alt="微信logo"/>
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAgCAYAAACo1a6zAAAABHNCSVQICAgIfAhkiAAAAJ5JREFUSA3t1TEKwkAUheH/ytLQJZaQkxkYpNkQqNVxGHJtFC27AzS1E5z5QKnwuPcX8/v2AgBKoMFOFOV7wnoLaN9T+ATdwcF1lm3Z4VMC2H7zBB1pUgeHKyB6ptnANBckzAytkNSHKGKAMkJgbSI7AwZZ02gJgXgs8OSRhxhYc3+YdMHZACnSIz4Zsvs7AAAAAElFTkSuQmCC" alt="QQ logo"/>
     </div>
-    <div class="select-item" data-type="qq" tabindex="0">
-      <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI1LjU2IDIyLjc4YTIuMzIgMi4zMiAwIDAgMC0yLjUtMi40M2gtMS4zOWEyLjAxIDIuMDEgMCAwIDEtLjgyLS43NGwtLjY2LTEuODZhMSAxIDAgMCAwLS44LS44NWgtOS4zMmEyLjM2IDIuMzYgMCAwIDAtMi40NS0yLjM3IDAgMCAwLTEuMjQgMS4wNSAxIDEgMCAwIDAtLjI5LjM2bC0xLjE1IDEuMDEgMS43OSAxLjc2YTIuMzIgMi4zMiAwIDAgMCAxLjM5LjUyIDEgMSAwIDAgMSAuNzYgMS4xNiAzLjk1IDMuOTUgMCAwIDAgMS44IDIgMSAxIDAgMCAxIDEuNjggMS4wNCAyLjMgMi4zIDAgMCAwIC43NSAxLjAyIDEgMSAwIDAgMSAuMTYgMS42NSA0LjM2IDQuMzYgMCAwIDAgMi42NiAxLjY0IDMgMyAwIDAgMCAxLjYtLjY2IDEgMSAwIDAgMSAuMzUtMS4wMyAyLjE2IDIuMTYgMCAwIDAgMC0xLjE0YTIuNzYgMi43NiAwIDAgMC0xLjg1LTEuODdsLTEuNDQtLjYyLjA1LS4wNGwuNjctMS4zNyAxLjQxLjY1IDEuNDQuNjJhMi4zMiAyLjMyIDAgMCAwIDEuMDMtLjQ3IDEgMSAwIDAgMC0uMDMtMS4xMnoiLz48L3N2Zz4=" alt="QQ Logo" />
-      QQ区
+    <div id="areaError" class="error"></div>
+
+    <label for="nickname">游戏昵称</label>
+    <input type="text" id="nickname" placeholder="请输入游戏昵称" />
+    <!-- 游戏昵称无需校验 -->
+
+    <label for="name">姓名</label>
+    <input type="text" id="name" placeholder="请输入真实姓名" />
+    <div id="nameError" class="error"></div>
+
+    <label for="idCard">身份证号</label>
+    <input type="text" id="idCard" placeholder="请输入18位身份证号" />
+    <div id="idError" class="error"></div>
+
+    <div style="font-size: 13px; margin-top: 8px; color: #ccc;">
+      二次实名认证是为确认领取人为账号本人，防止盗领等行为
     </div>
-  </div>
-  
-  <form id="userForm">
-    <label for="gameAccount">游戏账号：</label>
-    <input type="text" id="gameAccount" name="gameAccount" placeholder="请输入游戏账号" required />
-    <div id="gameAccountError" class="error-msg"></div>
 
-    <label for="realName">真实姓名：</label>
-    <input type="text" id="realName" name="realName" placeholder="请输入真实姓名" required />
-    <div id="realNameError" class="error-msg"></div>
+    <button onclick="validateForm()">提交认证</button>
 
-    <label for="idNumber">身份证号：</label>
-    <input type="text" id="idNumber" name="idNumber" placeholder="请输入18位身份证号" maxlength="18" required />
-    <div id="idNumberError" class="error-msg"></div>
-
-    <button type="submit" id="submitBtn">开始认证</button>
-  </form>
-
-  <div class="info">
-    实名认证通过后，即可参与抽奖获得限定车载皮肤！
+    <div class="back-btn" onclick="history.back()">← 返回</div>
   </div>
 
-  <div class="list-area" aria-live="polite" aria-atomic="true">
-    <div class="list-scroll" id="scrollingList"></div>
-  </div>
-</div>
+  <script>
+    function validateForm() {
+      let area = document.getElementById("area").value;
+      let name = document.getElementById("name").value.trim();
+      let id = document.getElementById("idCard").value.trim();
 
-<!-- 抽奖页面 -->
-<div class="container hidden" id="lotteryContainer">
-  <h1>车载皮肤抽奖</h1>
-  <div id="wheelWrapper" aria-label="抽奖皮肤列表" role="list">
-    <div id="wheel" role="listbox" tabindex="0" aria-live="polite" aria-atomic="true"></div>
-  </div>
-  <button id="btnStart" aria-label="开始抽奖按钮">开始抽奖</button>
-  <button id="btnReturn" aria-label="返回按钮">返回</button>
-  <div class="info" id="resultMsg" aria-live="assertive" style="margin-top: 15px;"></div>
-  
-  <div class="list-area">
-    <div class="list-scroll" id="scrollingListLottery"></div>
-  </div>
-</div>
+      let areaError = document.getElementById("areaError");
+      let nameError = document.getElementById("nameError");
+      let idError = document.getElementById("idError");
 
-<script>
-  // 皮肤数据 (车载皮肤logo)
-  const skins = [
-    {name: "火焰战车", logo: "https://i.imgur.com/W4Y8WJ9.png"},
-    {name: "雷霆疾驰", logo: "https://i.imgur.com/1SlzBqV.png"},
-    {name: "冰霜战车", logo: "https://i.imgur.com/w0ozkLM.png"},
-    {name: "幽冥幽灵", logo: "https://i.imgur.com/f1Jo6Lz.png"},
-    {name: "碳纤维疾风", logo: "https://i.imgur.com/HTjq3Lg.png"},
-    {name: "黄金轮毂", logo: "https://i.imgur.com/xTEFu8h.png"},
-    {name: "未来战士", logo: "https://i.imgur.com/GcEJxHZ.png"},
-    {name: "战地荣耀", logo: "https://i.imgur.com/vxGuB0b.png"},
-  ];
+      areaError.textContent = "";
+      nameError.textContent = "";
+      idError.textContent = "";
 
-  // 随机用户名和皮肤名字结合生成底部名单滚动内容
-  function generateUserList() {
-    const users = [];
-    const names = ["风之翼","烈焰","寒冰","影刃","雷神","狂暴","紫电","暗影"];
-    for(let i=0; i<100; i++){
-      let name = names[Math.floor(Math.random()*names.length)] + (Math.floor(Math.random()*999)+1);
-      let skin = skins[Math.floor(Math.random()*skins.length)].name;
-      users.push(`${name} 领取了【${skin}】`);
-    }
-    return users;
-  }
+      let valid = true;
 
-  // 渲染滚动列表
-  function renderScrollingList(containerId) {
-    const container = document.getElementById(containerId);
-    const list = generateUserList();
-    container.textContent = list.join("    ");
-  }
-  renderScrollingList("scrollingList");
-  renderScrollingList("scrollingListLottery");
-
-  // 选择微信或QQ区
-  const selectArea = document.getElementById("selectArea");
-  let selectedType = "wechat";
-  selectArea.addEventListener("click", e => {
-    if(e.target.closest(".select-item")){
-      [...selectArea.children].forEach(i => i.classList.remove("selected"));
-      const target = e.target.closest(".select-item");
-      target.classList.add("selected");
-      selectedType = target.getAttribute("data-type");
-    }
-  });
-  // 可用键盘选择
-  [...selectArea.children].forEach(item=>{
-    item.addEventListener("keydown", e=>{
-      if(e.key === "Enter" || e.key === " "){
-        e.preventDefault();
-        item.click();
+      if (!area) {
+        areaError.textContent = "请选择登录区服";
+        valid = false;
       }
-    });
-  });
 
-  // 表单验证
-  const form = document.getElementById("userForm");
-  const gameAccountInput = document.getElementById("gameAccount");
-  const realNameInput = document.getElementById("realName");
-  const idNumberInput = document.getElementById("idNumber");
+      if (!/^[\u4e00-\u9fa5]{1,5}$/.test(name)) {
+        nameError.textContent = "姓名必须为1-5个汉字";
+        valid = false;
+      }
 
-  const gameAccountError = document.getElementById("gameAccountError");
-  const realNameError = document.getElementById("realNameError");
-  const idNumberError = document.getElementById("idNumberError");
+      if (!/^\d{17}[\dXx]$/.test(id)) {
+        idError.textContent = "请输入正确的18位身份证号";
+        valid = false;
+      }
 
-  function validateID(id) {
-    if (!/^\d{17}[\dXx]$/.test(id)) return false;
-    // 简单身份证校验码验证
-    const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-    const codes = ['1','0','X','9','8','7','6','5','4','3','2'];
-    let sum = 0;
-    for(let i=0;i<17;i++){
-      sum += id[i]*weights[i];
-    }
-    let code = codes[sum % 11];
-    return code === id[17].toUpperCase();
-  }
-
-  function clearErrors(){
-    [gameAccountError, realNameError, idNumberError].forEach(el => el.textContent = "");
-    [gameAccountInput, realNameInput, idNumberInput].forEach(i => i.classList.remove("error"));
-  }
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    clearErrors();
-
-    let valid = true;
-    if(!gameAccountInput.value.trim()){
-      gameAccountError.textContent = "请输入游戏账号";
-      gameAccountInput.classList.add("error");
-      valid = false;
-    }
-    if(!realNameInput.value.trim()){
-      realNameError.textContent = "请输入真实姓名";
-      realNameInput.classList.add("error");
-      valid = false;
-    }
-    if(!idNumberInput.value.trim()){
-      idNumberError.textContent = "请输入身份证号";
-      idNumberInput.classList.add("error");
-      valid = false;
-    } else if(!validateID(idNumberInput.value.trim())){
-      idNumberError.textContent = "身份证号格式错误或校验失败";
-      idNumberInput.classList.add("error");
-      valid = false;
-    }
-
-    if(!valid) return;
-
-    // 模拟实名认证通过后，切换页面到抽奖页面
-    document.getElementById("formContainer").classList.add("hidden");
-    document.getElementById("lotteryContainer").classList.remove("hidden");
-    initLottery();
-  });
-
-  // 抽奖相关
-  const wheel = document.getElementById("wheel");
-  const btnStart = document.getElementById("btnStart");
-  const btnReturn = document.getElementById("btnReturn");
-  const resultMsg = document.getElementById("resultMsg");
-
-  let isSpinning = false;
-  let currentPosition = 0;
-
-  // 初始化轮盘滑动皮肤图
-  function initLottery(){
-    wheel.innerHTML = "";
-    skins.forEach((skin, i) => {
-      const img = document.createElement("img");
-      img.src = skin.logo;
-      img.alt = skin.name;
-      img.setAttribute("role","option");
-      img.setAttribute("aria-posinset", i + 1);
-      img.setAttribute("aria-setsize", skins.length);
-      if(i === 0) img.classList.add("active");
-      wheel.appendChild(img);
-    });
-    currentPosition = 0;
-    resultMsg.textContent = "";
-    btnStart.disabled = false;
-  }
-
-  // 抽奖函数
-  function spinLottery(){
-    if(isSpinning) return;
-    isSpinning = true;
-    btnStart.disabled = true;
-    resultMsg.textContent = "抽奖中...";
-    // 模拟抽奖，随机转动次数 30-50次 (循环滑动)
-    let spins = Math.floor(Math.random() * 20) + 30;
-    let duration = 4000; // 4秒
-
-    let start = null;
-    let initialPos = currentPosition;
-
-    function step(timestamp){
-      if(!start) start = timestamp;
-      let elapsed = timestamp - start;
-      let progress = Math.min(elapsed / duration, 1);
-      // easing 减速
-      let easeProgress = 1 - Math.pow(1 - progress, 3);
-      let position = initialPos + easeProgress * spins;
-      currentPosition = position % skins.length;
-
-      let translateX = -currentPosition * (120 + 20); // 图宽 + margin
-      wheel.style.transform = `translateX(${translateX}px)`;
-
-      // 设置活动边框
-      [...wheel.children].forEach((img,i)=>{
-        img.classList.toggle("active", Math.round(currentPosition) === i);
-      });
-
-      if(progress < 1){
-        requestAnimationFrame(step);
-      } else {
-        isSpinning = false;
-        btnStart.disabled = false;
-        let finalIndex = Math.round(currentPosition) % skins.length;
-        let winSkin = skins[finalIndex];
-        resultMsg.textContent = `恭喜您抽中【${winSkin.name}】！`;
-        addToScrollList(winSkin.name);
+      if (valid) {
+        alert("认证成功，跳转抽奖页（示例）");
+        // location.href = "抽奖页面.html"; // 可替换为你下一页地址
       }
     }
-    requestAnimationFrame(step);
-  }
-
-  btnStart.addEventListener("click", spinLottery);
-
-  // 返回按钮回到表单页面
-  btnReturn.addEventListener("click", ()=>{
-    document.getElementById("lotteryContainer").classList.add("hidden");
-    document.getElementById("formContainer").classList.remove("hidden");
-    // 清空结果信息和状态
-    resultMsg.textContent = "";
-    btnStart.disabled = false;
-  });
-
-  // 抽奖页面底部名单滚动区增加新中奖信息
-  function addToScrollList(skinName){
-    const scrollList = document.getElementById("scrollingListLottery");
-    const newUser = `玩家${Math.floor(Math.random()*9999)+1000} 领取了【${skinName}】`;
-    scrollList.textContent = newUser + "    " + scrollList.textContent;
-  }
-</script>
+  </script>
 </body>
 </html>
